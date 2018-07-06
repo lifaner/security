@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Login</title>
+
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" th:href="@{//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css}" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" th:href="@{/resources/font-awesome/4.4.0/css/font-awesome.min.css}">
+    <!-- Ionicons -->
+    <link rel="stylesheet" th:href="@{/resources/ionicons/2.0.1/css/ionicons.min.css}">
+    <!-- Theme style -->
+    <link rel="stylesheet" th:href="@{/resources/lte/dist/css/AdminLTE.min.css}">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body class="hold-transition login-page">
+<div class="login-box">
+    <!--<div class="login-logo">
+        <b>景区用车管理系统</b>
+    </div>-->
+    <!-- /.login-logo -->
+
+    <div class="login-box-body">
+
+        <p class="login-box-msg"> &nbsp;</p>
+        <form class="" id="oauthForm" action="#" method="post">
+            <div class="form-group has-feedback">
+                <input type="text" class="form-control" id="userName" placeholder="手机号">
+                <span class="glyphicon glyphicon-phone form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="password" class="form-control" id="password" placeholder="密码">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="text" class="form-control" id="validateCode" placeholder="验证码">
+                <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
+            </div>
+            <!--<div class="form-group has-feedback">
+                <img alt="如果看不清楚，请单击图片刷新！" class="pointer" id="captcha" th:src="@{/captcha.jpg}"  onclick="this.src='captcha.jpg?d='+ new Date()*1">
+                &nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:;"  id="refresh">点击刷新</a>
+            </div>-->
+            <div class="row">
+                <div class="col-xs-8">
+
+                </div>
+                <!-- /.col -->
+                <div class="col-xs-4">
+                    <button type="button" class="btn btn-primary btn-block btn-flat" id="submit">登录</button>
+                </div>
+                <!-- /.col -->
+            </div>
+
+        </form>
+
+    </div>
+    <!-- /.login-box-body -->
+</div>
+<!-- /.login-box -->
+
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="http://v3.bootcss.com/assets/js/ie10-viewport-bug-workaround.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script th:src="@{/resources/js/jquery.cookie.min.js}" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+
+    $("#refresh").click(function( event ) {
+        $("#captcha").attr("src",'captcha.jpg?d='+ new Date()*1);
+    });
+
+    $("#submit").click(function( event ) {
+        var userName= $("#userName").val();
+        var password= $("#password").val();
+        // var validateCode= $("#validateCode").val();
+        if(userName == ""){
+            $(".login-box-msg").html("用户名不能为空");
+            return false;
+        }
+        if(password == ""){
+            $(".login-box-msg").html("密码不能为空");
+            return false;
+        }
+        // if(validateCode == ""){
+        //     $(".login-box-msg").html("验证码不能为空");
+        //     return false;
+        // }
+
+        $.ajax({url:/*[[@{/login/valid.json}]]*/,
+            method:'POST',
+            data:{userName:userName,password:password,validateCode:validateCode}
+        }).done(function(result){
+            $.cookie('Authorization', result['result'], { expires: 1 });
+            window.location.href=/*[[@{/}]]*/;
+
+        }).fail(function(xhr){
+            var status = xhr.status;//200
+            if(status==401){
+                var s= xhr.getResponseHeader("feezu-error");
+                $(".login-box-msg").html(unescape(s.replace(/\\u/g, '%u')))
+            }
+            $("#captcha").attr("src",'captcha.jpg?d='+ new Date()*1);
+        }).always(function(){
+
+        });
+
+
+    });
+
+
+
+    /*]]>*/
+</script>
+
+</body>
+</html>

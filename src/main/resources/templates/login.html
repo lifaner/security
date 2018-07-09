@@ -92,10 +92,10 @@
             $(".login-box-msg").html("密码不能为空");
             return false;
         }
-        // if(validateCode == ""){
-        //     $(".login-box-msg").html("验证码不能为空");
-        //     return false;
-        // }
+        if(validateCode == ""){
+            $(".login-box-msg").html("验证码不能为空");
+            return false;
+        }
 
         $.ajax({url:/*[[@{/login/valid.json}]]*/,
             method:'POST',

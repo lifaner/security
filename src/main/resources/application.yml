@@ -1,6 +1,7 @@
 server:
   port: 9090
 
+
 spring:
   devtools:
     restart:
@@ -13,5 +14,10 @@ spring:
     suffix: .html
     prefix: classpath:/templates/
     enabled: true
+  application:
+    name: demo
 
-
+gate:
+  jwt:
+    secret: sGesf$^#3din
+    expiration: 7200

@@ -16,8 +16,20 @@ spring:
     enabled: true
   application:
     name: demo
+  activemq:
+    pool:
+      enabled: true
+      max-connections: 50
+    user: admin
+    password: admin
+    broker-url: tcp://127.0.0.1:61616
+    in-memory: true
+
+
 
 gate:
   jwt:
     secret: sGesf$^#3din
     expiration: 7200
+
+

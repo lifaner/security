@@ -24,6 +24,9 @@ spring:
     password: admin
     broker-url: tcp://127.0.0.1:61616
     in-memory: true
+  redis:
+    host: 127.0.0.1
+    port: 6379
 
 
 gate:

@@ -8,10 +8,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.jms.Destination;
+import java.util.concurrent.TimeUnit;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -26,6 +28,9 @@ public class DemoApplicationTests {
 
     @Autowired
     private HandleService handleService;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     @Test
     public void dosth() throws InterruptedException {
@@ -78,5 +83,11 @@ public class DemoApplicationTests {
         handleService.handle();
     }
 
+    @Test
+    public void redisTest(){
+        stringRedisTemplate.opsForValue().set("article:1",System.currentTimeMillis()+"",1,TimeUnit.MINUTES);
+        String s = stringRedisTemplate.opsForValue().get("article:1");
+        System.out.println(s);
+    }
 
 }

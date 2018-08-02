@@ -67,4 +67,6 @@ public class User extends JwtUser {
         return roleName;
     }
 
+
+
 }

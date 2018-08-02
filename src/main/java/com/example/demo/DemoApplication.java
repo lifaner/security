@@ -4,7 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.jms.annotation.JmsListener;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.net.InetAddress;
@@ -13,6 +15,7 @@ import java.net.UnknownHostException;
 @SpringBootApplication
 @EnableScheduling
 @Slf4j
+@EnableAspectJAutoProxy
 public class DemoApplication {
 
     public static void main(String[] args) throws UnknownHostException {
@@ -32,6 +35,7 @@ public class DemoApplication {
                 protocol,
                 InetAddress.getLocalHost().getHostAddress(),
                 env.getProperty("server.port"));
+
 
     }
 }

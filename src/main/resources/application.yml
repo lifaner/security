@@ -26,7 +26,6 @@ spring:
     in-memory: true
 
 
-
 gate:
   jwt:
     secret: sGesf$^#3din

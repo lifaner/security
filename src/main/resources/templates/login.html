@@ -8,7 +8,8 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
-    <link rel="stylesheet" th:href="@{//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css}" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css}"
+          href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <!--&lt;!&ndash; Font Awesome &ndash;&gt;-->
     <!--<link rel="stylesheet" th:href="@{/resources/font-awesome/4.4.0/css/font-awesome.min.css}">-->
     <!--&lt;!&ndash; Ionicons &ndash;&gt;-->
@@ -48,8 +49,9 @@
                 <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
-                <img alt="如果看不清楚，请单击图片刷新！" class="pointer" id="captcha" th:src="@{/captcha.jpg}"  onclick="this.src='captcha.jpg?d='+ new Date()*1">
-                &nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:;"  id="refresh">点击刷新</a>
+                <img alt="如果看不清楚，请单击图片刷新！" class="pointer" id="captcha" th:src="@{/captcha.jpg}"
+                     onclick="this.src='captcha.jpg?d='+ new Date()*1">
+                &nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:;" id="refresh">点击刷新</a>
             </div>
             <div class="row">
                 <div class="col-xs-8">
@@ -72,53 +74,65 @@
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="http://v3.bootcss.com/assets/js/ie10-viewport-bug-workaround.js"></script>
 <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-<!--<script th:src="@{/resources/js/jquery.cookie.min.js}" type="text/javascript" charset="utf-8"></script>-->
+<script th:src="@{/static/resources/js/jquery.cookie.min.js}" src type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" th:inline="javascript">
     /*<![CDATA[*/
 
-    $("#refresh").click(function( event ) {
-        $("#captcha").attr("src",'captcha.jpg?d='+ new Date()*1);
+    $("#refresh").click(function (event) {
+        $("#captcha").attr("src", 'captcha.jpg?d=' + new Date() * 1);
     });
 
-    $("#submit").click(function( event ) {
-        var userName= $("#userName").val();
-        var password= $("#password").val();
-        // var validateCode= $("#validateCode").val();
-        if(userName == ""){
-            $(".login-box-msg").html("用户名不能为空");
-            return false;
-        }
-        if(password == ""){
-            $(".login-box-msg").html("密码不能为空");
-            return false;
-        }
-        if(validateCode == ""){
-            $(".login-box-msg").html("验证码不能为空");
-            return false;
-        }
+    $("#submit").click(function (event) {
+        var userName = $("#userName").val();
+        var password = $("#password").val();
+        var validateCode= $("#validateCode").val();
+        // if(userName == ""){
+        //     $(".login-box-msg").html("用户名不能为空");
+        //     return false;
+        // }
+        // if(password == ""){
+        //     $(".login-box-msg").html("密码不能为空");
+        //     return false;
+        // }
+        // if(validateCode == ""){
+        //     $(".login-box-msg").html("验证码不能为空");
+        //     return false;
+        // }
+        // $.ajax({
+        //     url:'http://localhost:8081/a/device/demo',
+        //     type:'GET',
+        //     data:{
+        //         debugSwitch:1,
+        //         deviceNo:1
+        //     },
+        //     dataType:'jsonp',
+        //     success:function (data) {
+        //         console.info(data)
+        //     }
+        // });
+        //$("head").append("<script src='http://localhost:8081/a/device/demo?debugSwitch=1&deviceNo=1&callback=showData'><\/script>");
 
-        $.ajax({url:/*[[@{/login/valid.json}]]*/,
-            method:'POST',
-            data:{userName:userName,password:password,validateCode:validateCode}
-        }).done(function(result){
-            $.cookie('Authorization', result['result'], { expires: 1 });
-            window.location.href=/*[[@{/}]]*/;
 
-        }).fail(function(xhr){
-            var status = xhr.status;//200
-            if(status==401){
-                var s= xhr.getResponseHeader("feezu-error");
-                $(".login-box-msg").html(unescape(s.replace(/\\u/g, '%u')))
+        $.ajax({
+            url: '/login/valid',
+            type: 'POST',
+            data: {
+                username: userName,
+                password: password,
+                validateCode:validateCode
+            },
+            success: function (data) {
+                console.info(data);
+                $.cookie('Authorization', result['result'], { expires: 1 });
+                window.location.href=/*[[@{/}]]*/;
+            },
+            error: function (data) {
+                $("#captcha").attr("src", 'captcha.jpg?d=' + new Date() * 1);
             }
-            $("#captcha").attr("src",'captcha.jpg?d='+ new Date()*1);
-        }).always(function(){
-
         });
 
 
     });
-
-
 
     /*]]>*/
 </script>
